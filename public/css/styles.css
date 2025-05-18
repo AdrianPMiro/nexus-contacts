@@ -1,0 +1,257 @@
+/* styles.css */
+:root {
+    --bg: #0a0a0a;
+    --dark-bg: #111111;
+    --blue: #2292ff;
+    --blue-dark: #1a6fbf;
+    --white: #f8f8ff;
+    --gradient: linear-gradient(135deg, #2292ff 0%, #1a6fbf 100%);
+    --red: #ff2255;
+}
+
+/* Reset & Box model */
+* {
+    box-sizing: border-box;
+    transition: all 0.3s ease;
+}
+
+body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--white);
+    font-family: 'Inter', system-ui, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container {
+    width: 100%;
+    max-width: 800px;
+    padding: 2rem;
+}
+
+/* Header */
+.dash-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.gradient-text {
+    background: var(--gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+/* Flash message */
+.flash {
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    min-height: 1.2em;
+    text-align: center;
+}
+.flash.error {
+    color: var(--red);
+}
+.flash.success {
+    color: #4caf50;
+}
+
+/* Form labels visible */
+.form label,
+.auth-form label {
+    position: static !important;
+    width: auto !important;
+    height: auto !important;
+    overflow: visible !important;
+    clip: auto !important;
+    white-space: normal !important;
+    display: block;
+    margin-bottom: 0.5rem;
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+/* Screen-reader only fallback */
+.sr-only {
+    position: absolute;
+    left: -10000px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+}
+
+/* Formulario contactos y login/register */
+.form,
+.auth-form {
+    background: var(--dark-bg);
+    border-radius: 15px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow:
+      0 8px 32px rgba(0, 0, 0, 0.25),
+      0 0 10px rgba(34, 146, 255, 0.2);
+}
+
+.input-field {
+    margin-bottom: 1rem;
+}
+
+.cyber-input {
+    width: 100%;
+    padding: 0.75rem;
+    background: var(--bg);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    color: var(--white);
+    font-size: 0.95rem;
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.5);
+}
+.cyber-input:focus {
+    outline: none;
+    border-color: var(--blue);
+    box-shadow: 0 0 15px rgba(34, 146, 255, 0.3);
+}
+
+/* BOTONES LOGIN/REGISTER juntos */
+.auth-actions {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+.auth-actions .generate-btn,
+.auth-actions .link-btn {
+    flex: 1 1 0;
+    margin: 0;
+    padding: 0.75rem;
+    font-size: 0.95rem;
+}
+
+/* Botón principal (Entrar, Añadir contacto, etc) */
+.generate-btn {
+    background: var(--blue);
+    color: var(--white);
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    width: auto;
+}
+.generate-btn:hover {
+    background: var(--blue-dark);
+}
+
+/* Botón secundario (Sign Up, Register, Volver a login, etc) */
+.link-btn {
+    background: var(--blue-dark);
+    color: var(--white);
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    text-align: center;
+    display: inline-block;
+    text-decoration: none;
+}
+.link-btn:hover {
+    background: var(--blue);
+}
+
+/* Logout button (override width) */
+#logoutBtn {
+    background: var(--red);
+    color: var(--white);
+    width: auto;
+    padding: 0.6rem 1.2rem;
+}
+
+/* Lista de contactos */
+.contacts-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 1.5rem;
+}
+
+.contact-card {
+    background: var(--dark-bg);
+    border-radius: 15px;
+    padding: 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+.contact-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(34, 146, 255, 0.2);
+}
+
+.contact-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+.contact-name {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--blue);
+}
+.contact-phone,
+.contact-email {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+/* Actions inside each card */
+.contact-actions {
+    display: flex;
+    gap: 0.75rem;
+}
+
+/* Edit & Delete buttons */
+.edit-btn,
+.delete-btn {
+    border: none;
+    border-radius: 8px;
+    padding: 0.5rem 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    color: var(--white);
+}
+.edit-btn {
+    background: var(--blue);
+    box-shadow: 0 0 5px rgba(34, 146, 255, 0.3);
+}
+.edit-btn:hover {
+    background: var(--blue-dark);
+}
+.delete-btn {
+    background: var(--red);
+    box-shadow: 0 0 5px rgba(255, 34, 85, 0.3);
+}
+.delete-btn:hover {
+    opacity: 0.9;
+}
+
+/* Responsive */
+@media (max-width: 700px) {
+    .auth-actions {
+        flex-direction: column;
+    }
+    .contact-card {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+    .contact-actions {
+        width: 100%;
+        display: flex;
+        justify-content: flex-start;
+        gap: 1rem;
+    }
+}

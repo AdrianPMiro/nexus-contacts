@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus Register</title>
+    <link rel="stylesheet" href="css/auth.css">
+</head>
+<body>
+    <div class="container">
+        <h1 class="gradient-text">Nexus Register</h1>
+
+        <form id="registerForm" class="auth-form" autocomplete="off">
+            <div class="input-field">
+                <input type="text" 
+                       id="regUser" 
+                       class="cyber-input" 
+                       placeholder="Usuario"
+                       required>
+            </div>
+
+            <div class="input-field">
+                <input type="password" 
+                       id="regPass" 
+                       class="cyber-input" 
+                       placeholder="Contraseña"
+                       required>
+            </div>
+
+            <div class="auth-actions">
+                <button type="submit" class="generate-btn">Crear cuenta</button>
+                <button type="button" class="link-btn" onclick="location.href='login.html'">
+                    Volver a Login
+                </button>
+            </div>
+
+            <div id="regMsg" class="flash success"></div>
+        </form>
+    </div>
+
+	<script src="../src/data.js"></script>
+	<script src="../src/js/register.js"></script>
+</body>
+</html>

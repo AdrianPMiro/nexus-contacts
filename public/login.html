@@ -1,0 +1,44 @@
+	<!DOCTYPE html>
+	<html lang="es">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Nexus Login</title>
+		<link rel="stylesheet" href="css/auth.css">
+	</head>
+	<body>
+		<div class="container">
+			<h1 class="gradient-text">Nexus Login</h1>
+			
+			<form id="loginForm" class="auth-form" autocomplete="off">
+				<div class="input-field">
+					<input type="text" 
+						id="loginUser" 
+						class="cyber-input" 
+						placeholder="Usuario"
+						required>
+				</div>
+
+				<div class="input-field">
+					<input type="password" 
+						id="loginPass" 
+						class="cyber-input" 
+						placeholder="Contraseña"
+						required>
+				</div>
+
+				<div class="auth-actions">
+					<button type="submit" class="generate-btn">Entrar</button>
+					<button type="button" class="link-btn" onclick="location.href='register.html'">
+						Sign Up
+					</button>
+				</div>
+
+				<div id="loginMsg" class="flash error"></div>
+			</form>
+		</div>
+
+		<script src="../src/data.js"></script>
+		<script src="../src/js/login.js"></script>
+	</body>
+	</html>
