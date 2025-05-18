@@ -8,29 +8,42 @@
 </head>
 <body>
     <div class="container">
-        <h1 class="gradient-text">Nexus Register</h1>
+        <div class="auth-header">
+            <h1 class="gradient-text">Nexus Register</h1>
+            <div class="decorative-line"></div>
+        </div>
 
         <form id="registerForm" class="auth-form" autocomplete="off">
             <div class="input-field">
-                <input type="text" 
-                       id="regUser" 
-                       class="cyber-input" 
-                       placeholder="Usuario"
-                       required>
+                <div class="input-container">
+                    <input type="text" 
+                           id="regUser" 
+                           class="cyber-input" 
+                           placeholder="Usuario"
+                           required>
+                    <span class="input-icon">👤</span>
+                </div>
             </div>
 
             <div class="input-field">
-                <input type="password" 
-                       id="regPass" 
-                       class="cyber-input" 
-                       placeholder="Contraseña"
-                       required>
+                <div class="input-container">
+                    <input type="password" 
+                           id="regPass" 
+                           class="cyber-input" 
+                           placeholder="Contraseña"
+                           required>
+                    <span class="input-icon">🔒</span>
+                </div>
             </div>
 
             <div class="auth-actions">
-                <button type="submit" class="generate-btn">Crear cuenta</button>
+                <button type="submit" class="generate-btn">
+                    <span class="btn-content">Crear cuenta</span>
+                    <div class="hover-glow"></div>
+                </button>
                 <button type="button" class="link-btn" onclick="location.href='login.html'">
-                    Volver a Login
+                    <span class="btn-content">Volver a Login</span>
+                    <div class="hover-glow"></div>
                 </button>
             </div>
 
@@ -38,7 +51,7 @@
         </form>
     </div>
 
-	<script src="../src/data.js"></script>
-	<script src="../src/js/register.js"></script>
+    <script src="../src/data.js"></script>
+    <script src="../src/js/register.js"></script>
 </body>
 </html>

@@ -1,69 +1,809 @@
-
-    <!-- public/dashboard.html -->
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Nexus Contacts – Dashboard</title>
-  <link rel="stylesheet" href="css/styles.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+        --bg: #0a0a0a;
+        --dark-bg: #111111;
+        --blue: #2292ff;
+        --blue-dark: #1a6fbf;
+        --blue-rgb: 34, 146, 255;
+        --white: #f8f8ff;
+        --gradient: linear-gradient(135deg, var(--blue) 0%, var(--blue-dark) 100%);
+        --red: #ff2255;
+        --red-rgb: 255, 34, 85;
+        --success: #4caf50;
+        --success-rgb: 76, 175, 80;
+    }
+
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    body {
+        background: var(--bg);
+        color: var(--white);
+        font-family: 'Inter', system-ui, sans-serif;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        padding-top: 2rem; /* Reducido para header fijo */
+        padding-bottom: 3rem;
+        line-height: 1.6;
+        overflow-x: hidden; /* Prevenir scroll horizontal */
+    }
+
+    .container {
+        width: 100%;
+        max-width: 800px;
+        padding: 2rem;
+        /* La animación fadeIn se aplicará a elementos internos para más control */
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes lineExpand { /* Animación para la línea decorativa del título */
+        from { width: 0; opacity: 0; }
+        to { width: 120px; opacity: 0.8; } /* Ancho ajustado */
+    }
+    @keyframes titleFadeInUp { /* Animación para el título del dashboard */
+        from { opacity: 0; transform: translateY(30px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+
+    /* --- Header del Dashboard --- */
+    .dash-header-wrapper { /* Nuevo wrapper para posicionar logout */
+        position: relative;
+        width: 100%;
+        margin-bottom: 2.5rem;
+        animation: fadeIn 0.5s ease-out;
+    }
+
+    .dash-header {
+        text-align: center; /* Centrar el título y la línea */
+    }
+
+    .gradient-text {
+        background: var(--gradient);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        font-size: 2.8rem; /* Ligeramente más grande */
+        font-weight: 700;
+        letter-spacing: -0.5px;
+        margin-bottom: 0.75rem; /* Espacio para la línea */
+        display: inline-block; /* Para que la animación y el centrado funcionen bien */
+        animation: titleFadeInUp 0.8s ease-out 0.2s backwards; /* backwards para aplicar estado inicial */
+    }
+
+    .decorative-line-header { /* Línea bajo el título del dashboard */
+        width: 120px; /* Ancho inicial, se animará */
+        height: 3px;
+        background: var(--gradient);
+        margin: 0 auto 1.5rem auto; /* Centrada y con margen inferior */
+        border-radius: 2px;
+        opacity: 0.8;
+        animation: lineExpand 1s ease-out 0.5s backwards;
+    }
+    
+    #logoutBtn { /* Estilos para el botón de logout */
+        position: absolute;
+        top: 5px; /* Ajuste fino */
+        right: 5px; /* Ajuste fino */
+        padding: 0.5rem 1rem; /* Más pequeño */
+        font-size: 0.85rem; /* Texto más pequeño */
+        width: auto; /* No ocupa todo el ancho */
+        z-index: 10;
+    }
+
+
+    /* --- Formulario de Contacto --- */
+    .form {
+        background: var(--dark-bg);
+        border-radius: 16px;
+        padding: 2.5rem;
+        margin-bottom: 2.5rem;
+        box-shadow:
+            0 12px 40px rgba(0, 0, 0, 0.4), /* Sombra más pronunciada */
+            0 0 0 1px rgba(255, 255, 255, 0.08); /* Borde sutil */
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        animation: fadeIn 0.6s ease-out 0.4s backwards; /* Retraso para efecto escalonado */
+    }
+
+    .form-header h2 {
+        color: var(--blue);
+        margin-bottom: 2rem;
+        font-size: 1.5rem;
+        font-weight: 600;
+    }
+
+    .input-field {
+        margin-bottom: 1.8rem;
+        position: relative;
+    }
+
+    .input-container {
+        position: relative;
+    }
+
+    .cyber-input {
+        width: 100%;
+        padding: 1.1rem 1.1rem 1.1rem 3.2rem;
+        background: rgba(255, 255, 255, 0.05);
+        border: 2px solid rgba(255, 255, 255, 0.15);
+        border-radius: 10px;
+        color: var(--white);
+        font-size: 1rem;
+        font-family: inherit;
+        transition: all 0.4s ease;
+    }
+
+    .cyber-input::placeholder {
+        color: rgba(255, 255, 255, 0.4);
+        font-weight: 300;
+    }
+
+    .cyber-input:focus {
+        outline: none;
+        border-color: var(--blue);
+        box-shadow: 0 0 0 3px rgba(var(--blue-rgb), 0.25), 0 0 15px rgba(var(--blue-rgb), 0.2); /* Efecto glow */
+        background: rgba(var(--blue-rgb), 0.03);
+    }
+
+    .input-icon {
+        position: absolute;
+        left: 1.1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        opacity: 0.4;
+        transition: opacity 0.3s ease, color 0.3s ease; /* Añadida transición de color */
+        pointer-events: none;
+        font-size: 1.1rem;
+        color: rgba(255,255,255,0.5); /* Color inicial */
+    }
+
+    .cyber-input:focus ~ .input-icon {
+        opacity: 1; /* Más opaco */
+        color: var(--blue); /* Color del icono cambia a azul */
+        animation: iconPulse 0.6s ease;
+    }
+
+    @keyframes iconPulse {
+        0%, 100% { transform: translateY(-50%) scale(1); }
+        50% { transform: translateY(-50%) scale(1.15); } /* Pulso más notorio */
+    }
+
+    /* --- Botones --- */
+    .generate-btn {
+        position: relative;
+        overflow: hidden;
+        border: none;
+        border-radius: 10px;
+        padding: 1.1rem;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        font-family: inherit;
+        text-align: center;
+        background: var(--gradient);
+        color: var(--white);
+        transition: transform 0.2s ease, box-shadow 0.3s ease;
+        box-shadow: 0 4px 15px rgba(var(--blue-rgb), 0.2); /* Sombra sutil inicial */
+    }
+    .form .generate-btn {
+        width: 100%;
+    }
+
+    .generate-btn:hover {
+        box-shadow: 0 8px 25px rgba(var(--blue-rgb), 0.35); /* Sombra más pronunciada en hover */
+        transform: translateY(-2px); /* Ligero levantamiento */
+    }
+    .generate-btn:active {
+        transform: scale(0.97) translateY(0); /* Ajuste en active */
+        box-shadow: 0 2px 10px rgba(var(--blue-rgb), 0.2);
+    }
+
+    .danger-btn {
+        background: linear-gradient(135deg, var(--red) 0%, color-mix(in srgb, var(--red) 80%, black) 100%) !important;
+        box-shadow: 0 4px 15px rgba(var(--red-rgb), 0.2);
+    }
+    .danger-btn:hover {
+        box-shadow: 0 8px 25px rgba(var(--red-rgb), 0.35);
+        transform: translateY(-2px);
+    }
+     .danger-btn:active {
+        transform: scale(0.97) translateY(0);
+        box-shadow: 0 2px 10px rgba(var(--red-rgb), 0.2);
+    }
+
+
+    .btn-content {
+        position: relative;
+        z-index: 2;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+    }
+    .btn-content .icon {
+        font-size: 1.2em;
+        line-height: 1;
+    }
+
+    .hover-glow {
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 200%;
+        height: 100%;
+        background: linear-gradient(
+            90deg,
+            transparent,
+            rgba(255, 255, 255, 0.2), /* Brillo más intenso */
+            transparent
+        );
+        transition: left 0.7s ease;
+        z-index: 1;
+    }
+
+    .generate-btn:hover .hover-glow {
+        left: 100%;
+    }
+
+    /* --- Contenedor y Lista de Contactos --- */
+    .contacts-container {
+        margin-top: 3rem;
+        animation: fadeIn 0.6s ease-out 0.6s backwards; /* Retraso para efecto escalonado */
+    }
+
+    .contact-list-header {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 1rem;
+        margin-bottom: 2rem;
+        padding: 0 0.5rem;
+        border-bottom: 1px solid rgba(255,255,255,0.1); /* Borde más visible */
+        padding-bottom: 1rem;
+    }
+
+    .contact-list-header h3 {
+        font-size: 1.6rem;
+        font-weight: 600;
+        color: var(--white);
+    }
+
+    .contacts-count {
+        color: rgba(255, 255, 255, 0.6); /* Más contraste */
+        font-size: 0.9rem;
+    }
+
+    .contacts-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: grid;
+        gap: 1.2rem; /* Más espacio entre tarjetas */
+    }
+
+    .contact-card {
+        background: var(--dark-bg);
+        border-radius: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        transition: all 0.3s ease;
+        overflow: hidden;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.25); /* Sombra base */
+    }
+
+    .contact-card:hover {
+        transform: translateY(-5px) scale(1.02);
+        box-shadow: 0 12px 35px rgba(var(--blue-rgb), 0.28), 0 0 0 1px rgba(var(--blue-rgb),0.5); /* Sombra y borde azul */
+        border-color: rgba(var(--blue-rgb), 0.5);
+    }
+
+    .contact-content {
+        padding: 1.5rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .contact-info {
+        flex-grow: 1;
+        min-width: 0;
+    }
+
+    .contact-name {
+        font-size: 1.3rem;
+        font-weight: 600;
+        color: var(--blue);
+        margin-bottom: 0.5rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .contact-details {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .contact-phone,
+    .contact-email {
+        font-size: 0.95rem;
+        color: rgba(255, 255, 255, 0.8); /* Más contraste */
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .contact-phone::before {
+        content: '📱';
+        opacity: 0.8; /* Más visible */
+        font-size: 0.9em;
+        color: var(--blue); /* Icono azul */
+    }
+    .contact-email::before {
+        content: '📧';
+        opacity: 0.8; /* Más visible */
+        font-size: 0.9em;
+        color: var(--blue); /* Icono azul */
+    }
+
+    .contact-actions {
+        display: flex;
+        gap: 0.75rem;
+        margin-left: 1rem;
+    }
+
+    .edit-btn,
+    .delete-btn {
+        border: none;
+        border-radius: 8px;
+        padding: 0.6rem 1rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        background: rgba(var(--white), 0.08); /* Fondo más claro */
+        border: 1px solid rgba(var(--white), 0.18);
+    }
+
+    .edit-btn {
+        color: var(--blue);
+    }
+    .delete-btn {
+        color: var(--red);
+    }
+
+    .edit-btn:hover {
+        background: rgba(var(--blue-rgb), 0.2);
+        border-color: rgba(var(--blue-rgb), 0.6);
+        box-shadow: 0 0 15px rgba(var(--blue-rgb), 0.3);
+        color: var(--white);
+    }
+    .delete-btn:hover {
+        background: rgba(var(--red-rgb), 0.2);
+        border-color: rgba(var(--red-rgb), 0.6);
+        box-shadow: 0 0 15px rgba(var(--red-rgb), 0.3);
+        color: var(--white);
+    }
+
+    /* --- Mensajes Flash --- */
+    .flash {
+        text-align: center;
+        padding: 1rem; /* Más padding */
+        margin: 1.5rem auto 0;
+        max-width: 450px; /* Ligeramente más ancho */
+        border-radius: 10px; /* Más redondeado */
+        font-size: 0.95rem; /* Ligeramente más grande */
+        opacity: 0;
+        transform: translateY(-15px);
+        animation: slideInUp 0.5s 0.2s forwards; /* Animación mejorada */
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        border-left: 4px solid; /* Indicador lateral */
+    }
+
+    @keyframes slideInUp { /* Nueva animación para flash */
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+
+    .flash.error {
+        background: rgba(var(--red-rgb), 0.15); /* Fondo más intenso */
+        color: var(--red);
+        border-left-color: var(--red);
+    }
+
+    .flash.success {
+        background: rgba(var(--success-rgb), 0.15); /* Fondo más intenso */
+        color: var(--success);
+        border-left-color: var(--success);
+    }
+    .flash.info { /* Nuevo tipo de mensaje */
+        background: rgba(var(--blue-rgb), 0.15);
+        color: var(--blue);
+        border-left-color: var(--blue);
+    }
+
+
+    /* --- Responsive --- */
+    @media (max-width: 700px) {
+        body {
+            padding-top: 1.5rem;
+            padding-bottom: 1.5rem;
+        }
+        .container {
+            padding: 1rem; /* Menos padding en móviles */
+        }
+
+        .dash-header-wrapper {
+            margin-bottom: 2rem;
+        }
+        #logoutBtn {
+            top: -5px; /* Ajuste para móviles */
+            right: -5px;
+            padding: 0.4rem 0.8rem;
+            font-size: 0.8rem;
+        }
+        .gradient-text {
+            font-size: 2.2rem;
+        }
+        .decorative-line-header {
+            width: 100px;
+            margin-bottom: 1rem;
+        }
+
+        .form {
+            padding: 1.5rem;
+        }
+        .form-header h2 {
+            font-size: 1.3rem;
+        }
+
+        .contact-content {
+            flex-direction: column;
+            align-items: stretch;
+            gap: 1.2rem;
+            padding: 1.2rem; /* Ajuste de padding */
+        }
+
+        .contact-info {
+            margin-bottom: 0.5rem;
+        }
+
+        .contact-actions {
+            justify-content: flex-end;
+            margin-left: 0;
+            margin-top: 1rem;
+            width: 100%;
+            gap: 1rem;
+        }
+
+        .edit-btn,
+        .delete-btn {
+            flex: 1;
+            text-align: center;
+            padding: 0.75rem;
+        }
+
+        .contact-list-header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            padding: 0;
+        }
+        .contact-list-header h3 {
+            font-size: 1.4rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .container {
+            padding: 0.8rem;
+        }
+        .gradient-text {
+            font-size: 1.9rem;
+        }
+         .decorative-line-header {
+            width: 80px;
+        }
+        .form {
+            padding: 1.2rem;
+        }
+        .input-field {
+            margin-bottom: 1.5rem;
+        }
+        .cyber-input {
+            padding: 1rem 1rem 1rem 2.8rem;
+            font-size: 0.95rem;
+        }
+        .input-icon {
+            left: 0.8rem;
+            font-size: 1rem;
+        }
+        .form .generate-btn {
+            padding: 1rem;
+            font-size: 0.95rem;
+        }
+        .contact-content {
+            padding: 1rem;
+        }
+        .contact-name {
+            font-size: 1.15rem;
+        }
+        .contact-phone, .contact-email {
+            font-size: 0.9rem;
+        }
+        .flash {
+            padding: 0.8rem;
+            font-size: 0.9rem;
+        }
+    }
+  </style>
 </head>
 <body>
   <div class="container">
-    <!-- Header -->
-    <header class="dash-header">
-      <h1 class="gradient-text">Nexus Contacts</h1>
-      <button id="logoutBtn" class="generate-btn">Cerrar sesión</button>
-    </header>
+    <div class="dash-header-wrapper">
+        <button id="logoutBtn" class="generate-btn danger-btn">
+            <span class="btn-content">Cerrar sesión</span>
+            <div class="hover-glow"></div>
+        </button>
+        <header class="dash-header">
+            <h1 class="gradient-text">Nexus Contacts</h1>
+            <div class="decorative-line-header"></div>
+        </header>
+    </div>
 
-    <!-- Flash message -->
-    <div id="flash" class="flash"></div>
-
-    <!-- Formulario añadir/editar -->
     <form id="contactForm" class="form" autocomplete="off">
       <input type="hidden" name="contact_id" id="contactId" value="" />
+      <div class="form-header">
+        <h2>Añadir Contacto</h2> </div>
       <div class="input-field">
-        <input
-          id="nombre"
-          name="nombre"
-          type="text"
-          placeholder="Nombre"
-          class="cyber-input"
-          required
-        />
+        <div class="input-container">
+          <span class="input-icon">👤</span>
+          <input
+            id="nombre"
+            name="nombre"
+            type="text"
+            placeholder="Nombre"
+            class="cyber-input"
+            required
+          />
+        </div>
       </div>
       <div class="input-field">
-        <input
-          id="telefono"
-          name="telefono"
-          type="tel"
-          placeholder="Teléfono"
-          class="cyber-input"
-          pattern="^[+0-9 ]{9,15}$"
-          required
-        />
+        <div class="input-container">
+          <span class="input-icon">📱</span>
+          <input
+            id="telefono"
+            name="telefono"
+            type="tel"
+            placeholder="Teléfono"
+            class="cyber-input"
+            pattern="^[+0-9 \-()]{7,20}$"
+            required
+          />
+        </div>
       </div>
       <div class="input-field">
-        <input
-          id="email"
-          name="email"
-          type="email"
-          placeholder="Email"
-          class="cyber-input"
-          required
-        />
+        <div class="input-container">
+          <span class="input-icon">📧</span>
+          <input
+            id="email"
+            name="email"
+            type="email"
+            placeholder="Email"
+            class="cyber-input"
+            required
+          />
+        </div>
       </div>
       <button type="submit" class="generate-btn">
-        <span class="icon">＋</span>
-        <span id="btnText">Añadir Contacto</span>
+        <span class="btn-content">
+          <span class="icon">＋</span>
+          <span id="btnText">Añadir Contacto</span>
+        </span>
+        <div class="hover-glow"></div>
       </button>
     </form>
 
-    <!-- Lista de contactos -->
-    <ul id="contactsList" class="contacts-list"></ul>
+    <div id="flashMessageContainer"></div>
+
+    <div class="contacts-container">
+      <div class="contact-list-header">
+        <h3>Mis Contactos</h3>
+        <span id="contactsCount" class="contacts-count">(0 contactos)</span>
+      </div>
+      
+      <ul id="contactsList" class="contacts-list">
+        </ul>
+    </div>
   </div>
 
-  <script src="../src/data.js"></script>
-  <script src="../src/js/dashboard.js"></script>
+  <script>
+    // Mock data - simula data.js
+    let mockContacts = [
+        { id: Date.now() + 1, nombre: "Elena Peña Rodriguez", telefono: "+34 655 123 456", email: "elena.pena.rodriguez.dev@example.com" },
+        { id: Date.now() + 2, nombre: "Carlos Ruiz Santana", telefono: "911 987 654", email: "carlos.ruiz@example.com" },
+        { id: Date.now() + 3, nombre: "Ana María Torres", telefono: "+52 55 1234 5678", email: "ana.torres@example.mx" }
+    ];
+
+    const contactForm = document.getElementById('contactForm');
+    const contactIdInput = document.getElementById('contactId');
+    const nombreInput = document.getElementById('nombre');
+    const telefonoInput = document.getElementById('telefono');
+    const emailInput = document.getElementById('email');
+    const formButtonText = document.getElementById('btnText');
+    const formTitle = contactForm.querySelector('.form-header h2');
+    const contactsList = document.getElementById('contactsList');
+    const contactsCount = document.getElementById('contactsCount');
+    const flashMessageContainer = document.getElementById('flashMessageContainer');
+
+    function showFlashMessage(message, type = 'success') {
+        flashMessageContainer.innerHTML = ''; // Limpiar mensajes anteriores
+        const flashDiv = document.createElement('div');
+        flashDiv.className = `flash ${type}`;
+        flashDiv.textContent = message;
+        flashMessageContainer.appendChild(flashDiv);
+
+        // Forzar reflow para reiniciar la animación
+        flashDiv.style.animation = 'none';
+        flashDiv.offsetHeight; 
+        flashDiv.style.animation = ''; 
+
+        setTimeout(() => {
+            flashDiv.style.opacity = '0';
+            flashDiv.style.transform = 'translateY(-10px)';
+            setTimeout(() => {
+                if (flashDiv.parentNode) { // Comprobar si aún existe
+                   flashDiv.remove();
+                }
+            }, 400);
+        }, 3000);
+    }
+
+    function renderContacts() {
+        contactsList.innerHTML = ''; 
+        mockContacts.sort((a, b) => a.nombre.localeCompare(b.nombre)); // Ordenar alfabéticamente
+        mockContacts.forEach(contact => {
+            const li = document.createElement('li');
+            li.classList.add('contact-card');
+            li.dataset.id = contact.id;
+            li.innerHTML = `
+                <div class="contact-content">
+                    <div class="contact-info">
+                        <h4 class="contact-name">${contact.nombre}</h4>
+                        <div class="contact-details">
+                            <p class="contact-phone">${contact.telefono || 'No disponible'}</p>
+                            <p class="contact-email">${contact.email || 'No disponible'}</p>
+                        </div>
+                    </div>
+                    <div class="contact-actions">
+                        <button class="edit-btn" aria-label="Editar ${contact.nombre}">Editar</button>
+                        <button class="delete-btn" aria-label="Eliminar ${contact.nombre}">Eliminar</button>
+                    </div>
+                </div>
+            `;
+            // Añadir animación de entrada a las tarjetas
+            li.style.opacity = '0';
+            li.style.transform = 'translateY(20px)';
+            setTimeout(() => {
+                li.style.opacity = '1';
+                li.style.transform = 'translateY(0)';
+            }, 100 + mockContacts.indexOf(contact) * 100); // Efecto escalonado
+
+            contactsList.appendChild(li);
+        });
+        contactsCount.textContent = `(${mockContacts.length} contacto${mockContacts.length !== 1 ? 's' : ''})`;
+    }
+
+    contactForm.addEventListener('submit', function(event) {
+        event.preventDefault();
+        const id = contactIdInput.value;
+        const contactData = {
+            nombre: nombreInput.value.trim(),
+            telefono: telefonoInput.value.trim(),
+            email: emailInput.value.trim(),
+        };
+
+        // Validación simple
+        if (!contactData.nombre || !contactData.telefono || !contactData.email) {
+            showFlashMessage('Todos los campos son obligatorios.', 'error');
+            return;
+        }
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contactData.email)) {
+            showFlashMessage('Por favor, introduce un email válido.', 'error');
+            return;
+        }
+
+
+        if (id) { 
+            const index = mockContacts.findIndex(c => c.id == id);
+            if (index > -1) {
+                mockContacts[index] = { ...mockContacts[index], ...contactData };
+                showFlashMessage('¡Contacto actualizado con éxito!', 'success');
+            }
+        } else { 
+            // Comprobar si el email ya existe al añadir
+            if (mockContacts.some(c => c.email === contactData.email)) {
+                showFlashMessage('Error: El email ya existe.', 'error');
+                return;
+            }
+            mockContacts.push({ id: Date.now(), ...contactData });
+            showFlashMessage('¡Contacto añadido con éxito!', 'success');
+        }
+        renderContacts();
+        resetForm();
+    });
+
+    contactsList.addEventListener('click', function(event) {
+        const target = event.target;
+        const card = target.closest('.contact-card');
+        if (!card) return;
+        const contactId = card.dataset.id;
+
+        if (target.classList.contains('delete-btn')) {
+            if (confirm('¿Estás seguro de que quieres eliminar este contacto?')) {
+                mockContacts = mockContacts.filter(c => c.id != contactId);
+                renderContacts(); // Re-render para aplicar animación de salida (implícita por eliminación)
+                showFlashMessage('Contacto eliminado.', 'info');
+            }
+        } else if (target.classList.contains('edit-btn')) {
+            const contact = mockContacts.find(c => c.id == contactId);
+            if (contact) {
+                contactIdInput.value = contact.id;
+                nombreInput.value = contact.nombre;
+                telefonoInput.value = contact.telefono;
+                emailInput.value = contact.email;
+                formButtonText.textContent = 'Guardar Cambios';
+                formTitle.textContent = 'Editar Contacto';
+                nombreInput.focus();
+                contactForm.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+    });
+    
+    function resetForm() {
+        contactForm.reset(); 
+        contactIdInput.value = ''; 
+        formButtonText.textContent = 'Añadir Contacto';
+        formTitle.textContent = 'Añadir Contacto';
+        nombreInput.focus(); // Devuelve el foco al primer campo
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        renderContacts();
+        const logoutBtn = document.getElementById('logoutBtn');
+        if(logoutBtn) {
+            logoutBtn.addEventListener('click', () => {
+                showFlashMessage('Cerrando sesión...', 'info');
+                setTimeout(() => {
+                    // Simulación, en un caso real redirigirías o limpiarías el estado de sesión
+                    alert("Has cerrado sesión (simulado). Serías redirigido a la página de login.");
+                    // window.location.href = 'login.html'; 
+                }, 1500);
+            });
+        }
+        nombreInput.focus(); // Foco inicial en el campo nombre
+    });
+  </script>
 </body>
 </html>

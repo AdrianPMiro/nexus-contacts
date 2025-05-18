@@ -6,15 +6,18 @@
     --white: #f8f8ff;
     --gradient: linear-gradient(135deg, #2292ff 0%, #1a6fbf 100%);
     --red: #ff2255;
+    --success: #4caf50;
 }
 
+/* Reset y estilos base */
 * {
     box-sizing: border-box;
+    margin: 0;
+    padding: 0;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 body {
-    margin: 0;
     background: var(--bg);
     color: var(--white);
     font-family: 'Inter', system-ui, sans-serif;
@@ -22,12 +25,27 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    line-height: 1.6;
 }
 
+/* Contenedor principal */
 .container {
     width: 100%;
     max-width: 400px;
     padding: 2rem;
+    animation: fadeIn 0.6s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Encabezado */
+.auth-header {
+    position: relative;
+    margin-bottom: 2.5rem;
+    text-align: center;
 }
 
 .gradient-text {
@@ -36,53 +54,101 @@ body {
     background-clip: text;
     color: transparent;
     font-size: 2.5rem;
-    text-align: center;
-    margin-bottom: 2.5rem;
+    font-weight: 700;
     letter-spacing: -0.5px;
+    margin-bottom: 0.5rem;
 }
 
+.decorative-line {
+    width: 80px;
+    height: 3px;
+    background: var(--gradient);
+    margin: 0 auto;
+    border-radius: 2px;
+    opacity: 0.8;
+    animation: lineExpand 0.8s ease-out;
+}
+
+@keyframes lineExpand {
+    from { width: 0; opacity: 0; }
+    to { width: 80px; opacity: 0.8; }
+}
+
+/* Formulario */
 .auth-form {
     background: var(--dark-bg);
     border-radius: 16px;
     padding: 2.5rem;
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+    box-shadow: 
+        0 12px 40px rgba(0, 0, 0, 0.3),
+        0 0 0 1px rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .input-field {
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.8rem;
+    position: relative;
+}
+
+.input-container {
+    position: relative;
 }
 
 .cyber-input {
     width: 100%;
-    padding: 1.1rem;
+    padding: 1.1rem 3rem 1.1rem 1.1rem;
     background: rgba(255, 255, 255, 0.05);
     border: 2px solid rgba(255, 255, 255, 0.15);
     border-radius: 10px;
     color: var(--white);
     font-size: 1rem;
+    font-family: inherit;
+    transition: all 0.4s ease;
 }
 
 .cyber-input::placeholder {
     color: rgba(255, 255, 255, 0.4);
+    font-weight: 300;
 }
 
 .cyber-input:focus {
     outline: none;
     border-color: var(--blue);
-    box-shadow: 0 0 25px rgba(34, 146, 255, 0.2);
+    box-shadow: 0 0 0 3px rgba(34, 146, 255, 0.2);
     background: rgba(34, 146, 255, 0.03);
 }
 
+.input-icon {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 0.4;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+}
+
+.cyber-input:focus ~ .input-icon {
+    opacity: 0.8;
+    animation: iconPulse 0.6s ease;
+}
+
+@keyframes iconPulse {
+    0%, 100% { transform: translateY(-50%) scale(1); }
+    50% { transform: translateY(-50%) scale(1.2); }
+}
+
+/* Botones */
 .auth-actions {
     display: flex;
     gap: 1rem;
-    margin-top: 2rem;
+    margin-top: 2.5rem;
 }
 
-.generate-btn {
-    background: var(--gradient);
-    color: var(--white);
+.generate-btn,
+.link-btn {
+    position: relative;
+    overflow: hidden;
     border: none;
     border-radius: 10px;
     padding: 1.1rem;
@@ -90,16 +156,35 @@ body {
     font-size: 1rem;
     font-weight: 600;
     cursor: pointer;
-    position: relative;
-    overflow: hidden;
+    font-family: inherit;
+    text-align: center;
+    transition: 
+        transform 0.2s ease,
+        box-shadow 0.3s ease;
 }
 
-.generate-btn::after {
-    content: '';
+.generate-btn {
+    background: var(--gradient);
+    color: var(--white);
+}
+
+.link-btn {
+    background: transparent;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    color: var(--white);
+}
+
+.btn-content {
+    position: relative;
+    z-index: 2;
+    display: block;
+}
+
+.hover-glow {
     position: absolute;
     top: 0;
     left: -100%;
-    width: 100%;
+    width: 200%;
     height: 100%;
     background: linear-gradient(
         90deg,
@@ -107,22 +192,12 @@ body {
         rgba(255, 255, 255, 0.15),
         transparent
     );
-    transition: left 0.6s;
+    transition: left 0.7s ease;
+    z-index: 1;
 }
 
-.generate-btn:hover::after {
+.generate-btn:hover .hover-glow {
     left: 100%;
-}
-
-.link-btn {
-    background: transparent;
-    border: 2px solid rgba(255, 255, 255, 0.1);
-    color: var(--white);
-    padding: 1rem;
-    border-radius: 10px;
-    width: 100%;
-    font-size: 1rem;
-    cursor: pointer;
 }
 
 .link-btn:hover {
@@ -130,12 +205,45 @@ body {
     background: rgba(34, 146, 255, 0.05);
 }
 
+.generate-btn:active,
+.link-btn:active {
+    transform: scale(0.98);
+}
+
+/* Estados de carga */
+.loading .btn-content {
+    visibility: hidden;
+}
+
+.loading::after {
+    content: "";
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: 3px solid rgba(255, 255, 255, 0.2);
+    border-top-color: var(--white);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    z-index: 2;
+}
+
+@keyframes spin {
+    to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+/* Mensajes flash */
 .flash {
     text-align: center;
     padding: 0.8rem;
-    margin: 1rem 0;
+    margin: 1.5rem 0 0;
     border-radius: 8px;
     font-size: 0.9rem;
+    opacity: 0;
+    transform: translateY(-10px);
+    animation: slideIn 0.4s 0.2s forwards;
 }
 
 .flash.error {
@@ -145,9 +253,17 @@ body {
 
 .flash.success {
     background: rgba(76, 175, 80, 0.1);
-    color: #4caf50;
+    color: var(--success);
 }
 
+@keyframes slideIn {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive */
 @media (max-width: 480px) {
     .container {
         padding: 1.5rem;
@@ -159,5 +275,21 @@ body {
 
     .gradient-text {
         font-size: 2rem;
+    }
+
+    .auth-actions {
+        flex-direction: column;
+    }
+
+    .link-btn {
+        order: -1;
+        margin-bottom: 1rem;
+    }
+}
+
+/* Efectos especiales para dark mode */
+@media (prefers-color-scheme: dark) {
+    .cyber-input {
+        border-color: rgba(255, 255, 255, 0.2);
     }
 }
